@@ -6,5 +6,6 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "anthropic>=0.105.2",
+    "datasets>=5.0.0",
     "inspect-ai>=0.3.232",
 ]
