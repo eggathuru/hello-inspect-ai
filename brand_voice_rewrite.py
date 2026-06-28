@@ -8,8 +8,14 @@ from inspect_ai.scorer import model_graded_qa
 from inspect_ai.solver import generate, prompt_template, system_message
 
 brand_voice_rewrite_dataset = [
-    Sample(input="Ticket closed. Issue was user error. Told them to read the manual."),
-    Sample(input="Refund denied, outside policy window. Not our problem."),
+    Sample(
+        input="Ticket closed. Issue was user error. Told them to read the manual.",
+        target="Don't blame the user so explicitly. Use a more understanding tone",
+    ),
+    Sample(
+        input="Refund denied, outside policy window. Not our problem.",
+        target="Kindly explain the refund can't be issued",
+    ),
 ]
 
 SYSTEM_MESSAGE = """
