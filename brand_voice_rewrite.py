@@ -2,10 +2,10 @@
 You're evaluating whether a model can rewrite blunt internal notes into your company's warm, plain-language customer voice. Hold the notes in code. Wrap each note in a reusable instruction template before sending it, set the persona up front, and have a model judge whether the rewrite matches the voice guidelines.
 """
 
-from inspect_ai import Task, task
+from inspect_ai import Task, solver, task
 from inspect_ai.dataset import Sample
 from inspect_ai.scorer import model_graded_qa
-from inspect_ai.solver import generate, prompt_template, system_message
+from inspect_ai.solver import chain, generate, prompt_template, solver, system_message
 
 brand_voice_rewrite_dataset = [
     Sample(
@@ -38,5 +38,26 @@ def brand_voice_rewrite():
             prompt_template(PROMPT_TEMPLATE),
             generate(),
         ],
+        scorer=model_graded_qa(),
+    )
+
+
+@solver
+def my_solver(
+    system_prompt: str = "brand_voice_rewrite_system_prompt.txt",
+    user_prompt: str = "brand_voice_rewrite_prompt_template.txt",
+):
+    return chain(
+        system_message(system_prompt),
+        prompt_template(user_prompt),
+        generate(),
+    )
+
+
+@task
+def brand_voice_rewrite_with_named_scorer():
+    return Task(
+        dataset=brand_voice_rewrite_dataset,
+        solver=my_solver(),
         scorer=model_graded_qa(),
     )
