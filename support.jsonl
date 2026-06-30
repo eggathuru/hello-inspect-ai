@@ -1,0 +1,2 @@
+{"ticket": "App won't sync after the update.", "gold": "Sign out and back in to force a token refresh.", "ticket_id": "T-1042", "product_area": "mobile"}
+{"ticket": "Export button is greyed out.", "gold": "Export requires an admin role; ask a workspace owner to grant it.", "ticket_id": "T-1043", "product_area": "permissions"}
