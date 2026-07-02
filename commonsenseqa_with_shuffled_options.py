@@ -18,10 +18,11 @@ def record_to_sample(record):
         index_to_choice = list(enumerate(choices))
         shuffled_index_to_choice = index_to_choice.copy()
         random.shuffle(shuffled_index_to_choice)
-        new_target_index = target_index
-        for i, choice in shuffled_index_to_choice:
-            if choice == index_to_choice[target_index]:
-                new_target_index = i
+        new_target_index = -1
+        for new_index, (old_index, _) in enumerate(shuffled_index_to_choice):
+            if old_index == target_index:
+                new_target_index = new_index
+        assert new_target_index > -1
         return (
             [choice for _, choice in shuffled_index_to_choice],
             chr(new_target_index + ord("A")),
