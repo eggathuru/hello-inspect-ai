@@ -50,3 +50,27 @@ def commonsenseqa_with_shuffled_options(limit: int = 10):
         solver=multiple_choice(),
         scorer=choice(),
     )
+
+
+def record_to_sample_simple(record):
+    return Sample(
+        id=record["id"],
+        input=record["question"],
+        choices=record["choices"]["text"],
+        target=record["answerKey"],
+    )
+
+
+@task
+def commonsenseqa_with_shuffled_options_simple(limit: int = 10):
+    return Task(
+        dataset=hf_dataset(
+            path="tau/commonsense_qa",
+            split="validation",
+            limit=limit,
+            shuffle_choices=True,
+            sample_fields=record_to_sample,
+        ),
+        solver=multiple_choice(),
+        scorer=choice(),
+    )
