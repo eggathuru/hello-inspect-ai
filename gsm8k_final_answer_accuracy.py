@@ -6,10 +6,10 @@ Run grade-school math word problems. Records have question and answer, where ans
 Source: path="gsm8k", name="main", split="test".
 """
 
-from inspect_ai import Task, task
+from inspect_ai import Task, solver, task
 from inspect_ai.dataset import Sample, hf_dataset
 from inspect_ai.scorer import model_graded_fact
-from inspect_ai.solver import chain_of_thought, generate
+from inspect_ai.solver import chain, chain_of_thought, generate, self_critique, solver
 
 
 def record_to_sample(record):
@@ -36,4 +36,18 @@ def gsm8k_final_answer_accuracy(limit: int = 10):
             generate(),
         ],
         scorer=model_graded_fact(),
+    )
+
+
+@solver
+def solver_with_self_correction():
+    """
+        D15. GSM8K with self-correction (same data, different chain)
+
+    Reuse the GSM8K dataset from D14, but this time have the model produce a chain-of-thought answer, then critique and revise it before grading. Because the revised answers are free-form, grade them with a model rather than a string match.
+    """
+    return chain(
+        chain_of_thought(),
+        generate(),
+        self_critique(),
     )
